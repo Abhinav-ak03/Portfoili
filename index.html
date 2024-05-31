@@ -215,9 +215,9 @@
           <div class="card">
             <div class="card-block">
               <h2>Contact</h2>
-              <form id="submit-form" action=""class="reveal-content">
+              <form id="submit-form" action=""class="reveal-content" >
                 <div class="form-group">
-                  <input name="First name" type="text" class="form-control" id="subject" placeholder="First Name">
+                  <input name="First name" type="text" class="form-control" id="name" placeholder="First Name">
                 </div>
                 <div class="form-group">
                   <input name="Email"  type="email" class="form-control" id="email" placeholder="Email">
@@ -226,7 +226,7 @@
                   <input name="Subject"  type="text" class="form-control" id="subject" placeholder="Subject">
                 </div>
                 <div class="form-group">
-                  <textarea name="message"  class="form-control" rows="5" placeholder="Enter your message"></textarea>
+                  <textarea name="message"  class="form-control" rows="5" placeholder="Enter your message" id="message"></textarea>
                 </div>
                 <input type="hidden" name="G-Form" value="responses">
                 <div class="form-group">
@@ -262,24 +262,61 @@
       scrollRevelation('.card');
     });
   </script>
-  <script>
-    $("#submit-form").submit((e)=>{
-        e.preventDefault()
-        $.ajax({
-            url:"https://script.google.com/macros/s/AKfycbyQgRCBzHWhYO4tyS1gOQ7W7Bc-SKzjXGugEbccT7uSS02aN-wyALjBRQYkIm_0QcsnPw/exec",
-            data:$("#submit-form").serialize(),
-            method:"post",
-            success:function (response){
-                alert("Form submitted successfully")
-                window.location.reload()
-                //window.location.href="https://google.com"
-            },
-            error:function (err){
-                alert("Something Error")
 
-            }
-        })
-    })
+  <script>
+   $("#submit-form").submit(function(e) {
+  e.preventDefault();
+
+  if (validation()) {
+    $.ajax({
+      url: "https://script.google.com/macros/s/AKfycbyQgRCBzHWhYO4tyS1gOQ7W7Bc-SKzjXGugEbccT7uSS02aN-wyALjBRQYkIm_0QcsnPw/exec",
+      data: $("#submit-form").serialize(),
+      method: "post",
+      success: function(response) {
+        alert("Form submitted successfully");
+        window.location.reload();
+      },
+      error: function(err) {
+        alert("Something Error");
+      }
+    });
+  }
+});
+
+    function validation() {
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var subject = document.getElementById("subject").value;
+      var message = document.getElementById("message").value;
+      var emailPattern = /^[a-zA-Z0-9._-]+@[a-z]+\.[a-z]{2,3}$/;
+      var namePattern = /^[^\s][a-zA-Z]{2,}(?:\s[a-zA-Z]*)?$/;
+
+      if (!namePattern.test(name)) {
+        alert("Please enter a proper name");
+        return false;
+      }
+      if (name.length < 2) {
+        alert("Name should have at least 2 characters");
+        return false;
+      }
+      if (!email) {
+        alert("Please enter your email");
+        return false;
+      }
+      if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address");
+        return false;
+      }
+      if (!subject) {
+        alert("Please enter the subject");
+        return false;
+      }
+      if (!message) {
+        alert("Please enter your message");
+        return false;
+      }
+      return true;
+    }
 </script>
   <script type="text/javascript" src="./main.bc58148c.js"></script>
 </body>
